@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Wayfinder Email Signature</title>
+<link rel="icon" href="assets/photo-placeholder.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@600&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --dark-green:#015440; --green:#248572; --dg-10:#E6EEEC; --g-10:#E9F3F1;
+    --gd-50:#80A99F; --y-10:#FDF7E9; --dark-yellow:#8F6700; --red:#C23E3E;
+    --ink:#000000; --muted:#3E3957; --line:#80A99F; --bg:#FFFFFF;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:Poppins,sans-serif;font-size:15px;line-height:1.5}
+  header{background:var(--dark-green);color:#fff;padding:28px 16px}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 16px}
+  header .wrap{padding:0}
+  header h1{font-family:Lora,serif;font-weight:600;font-size:30px;margin:0 0 4px}
+  header p{margin:0;opacity:.9;max-width:640px}
+  main{padding:28px 0 56px}
+  .grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:28px;align-items:start}
+  @media (max-width:860px){.grid{grid-template-columns:minmax(0,1fr)}}
+  section.card{border:1px solid var(--dg-10);border-radius:12px;padding:20px;margin-bottom:20px;background:#fff}
+  .step{display:flex;gap:10px;align-items:center;margin:0 0 14px}
+  .step .n{flex:none;width:28px;height:28px;border-radius:50%;background:var(--dark-green);color:#fff;font-weight:600;font-size:14px;display:grid;place-items:center}
+  .step h2{font-size:18px;margin:0;font-weight:600}
+  label{display:block;font-weight:500;font-size:14px;margin:14px 0 4px}
+  label .opt{font-weight:400;color:var(--muted)}
+  input[type=text],input[type=tel],input[type=url]{width:100%;font:inherit;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink)}
+  input:focus-visible,button:focus-visible,.crop:focus-visible,a:focus-visible{outline:3px solid var(--green);outline-offset:2px}
+  .hint{font-size:13px;color:var(--muted);margin:4px 0 0}
+  .error{font-size:13px;color:var(--red);margin:4px 0 0}
+  button,.btn{font:inherit;font-weight:600;border-radius:8px;padding:10px 16px;cursor:pointer;border:2px solid var(--dark-green);display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none}
+  .primary{background:var(--dark-green);color:#fff}
+  .primary:hover{background:var(--green);border-color:var(--green)}
+  .secondary{background:#fff;color:var(--dark-green)}
+  .secondary:hover{background:var(--g-10)}
+  button:disabled{opacity:.45;cursor:not-allowed}
+  .drop{border:2px dashed var(--line);border-radius:10px;padding:18px;text-align:center;background:var(--g-10)}
+  .drop.over{border-color:var(--dark-green);background:var(--dg-10)}
+  .cropper{display:none;gap:18px;align-items:center;flex-wrap:wrap;margin-top:6px}
+  .cropper.on{display:flex}
+  .crop{width:220px;height:220px;flex:none;max-width:100%;border-radius:50%;overflow:hidden;position:relative;cursor:grab;touch-action:none;background:var(--dg-10);box-shadow:0 0 0 1px var(--line)}
+  .crop.drag{cursor:grabbing}
+  .crop canvas{width:100%;height:100%;display:block}
+  .crop-controls{flex:1;min-width:180px}
+  input[type=range]{width:100%;accent-color:var(--dark-green)}
+  .preview-col{position:sticky;top:16px}
+  @media (max-width:860px){.preview-col{position:static}}
+  .sig-frame{border:1px solid var(--dg-10);border-radius:10px;padding:20px;background:#fff;overflow-x:auto}
+  .mail-chrome{font-size:13px;color:var(--muted);border-bottom:1px solid var(--dg-10);padding-bottom:10px;margin-bottom:14px}
+  .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+  .status{min-height:22px;font-size:14px;font-weight:500;color:var(--dark-green);margin-top:10px}
+  ol.howto{padding-left:20px;margin:0}
+  ol.howto li{margin:0 0 12px}
+  ol.howto li::marker{font-weight:600;color:var(--dark-green)}
+  .note{background:var(--y-10);border-radius:8px;padding:12px 14px;font-size:14px;margin-top:14px}
+  kbd{font-family:inherit;font-size:13px;border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:0 5px;background:#fff}
+  #copySource{position:fixed;left:-9999px;top:0}
+  footer{font-size:13px;color:var(--muted);padding:0 0 32px}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>Set Up Your Email Signature</h1>
+    <p>Fill in your details, add your photo, and copy your signature into Gmail. It takes about five minutes.</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="grid">
+    <div>
+      <section class="card" aria-labelledby="s1">
+        <div class="step"><span class="n">1</span><h2 id="s1">Add Your Details</h2></div>
+        <label for="name">Full name</label>
+        <input id="name" type="text" autocomplete="name" placeholder="Jordan Rivera">
+        <label for="title">Job title</label>
+        <input id="title" type="text" autocomplete="organization-title" placeholder="Partnerships">
+        <label for="phone">Phone <span class="opt">(optional)</span></label>
+        <input id="phone" type="tel" autocomplete="tel" placeholder="972.345.9699">
+        <p class="hint">Type it however you like—we’ll format it as 000.000.0000.</p>
+        <label for="cal">Scheduling link <span class="opt">(optional)</span></label>
+        <input id="cal" type="url" placeholder="https://calendly.com/your-name/30min">
+        <p class="hint">Adds a “Schedule Call” button. Leave it blank if you don’t use one.</p>
+        <p class="error" id="calError" hidden>That doesn’t look like a link. Check that it starts with https://</p>
+      </section>
+
+      <section class="card" aria-labelledby="s2">
+        <div class="step"><span class="n">2</span><h2 id="s2">Make Your Circle Photo</h2></div>
+        <div class="drop" id="drop">
+          <p style="margin:0 0 10px">Choose a headshot. A photo where you’re centered works best.</p>
+          <label class="btn secondary" for="file" style="margin:0">Choose photo</label>
+          <input id="file" type="file" accept="image/*" hidden>
+          <p class="hint">Your photo stays on your computer—nothing is uploaded.</p>
+        </div>
+        <div class="cropper" id="cropper">
+          <div class="crop" id="crop" tabindex="0" aria-label="Photo position. Drag, or use arrow keys, to move your photo inside the circle."><canvas id="cropCanvas" width="440" height="440"></canvas></div>
+          <div class="crop-controls">
+            <label for="zoom" style="margin-top:0">Zoom</label>
+            <input id="zoom" type="range" min="1" max="4" step="0.01" value="1">
+            <p class="hint">Drag the photo to position your face in the circle.</p>
+            <div class="actions">
+              <button class="primary" id="download">Download circle photo</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="preview-col">
+      <section class="card" aria-labelledby="s3">
+        <div class="step"><span class="n">3</span><h2 id="s3">Copy Your Signature</h2></div>
+        <div class="sig-frame">
+          <div class="mail-chrome">Preview</div>
+          <div id="preview"></div>
+        </div>
+        <div class="actions">
+          <button class="primary" id="copy" disabled>Copy signature</button>
+        </div>
+        <p class="status" id="status" role="status" aria-live="polite">Add your name and title to copy your signature.</p>
+        <p class="hint">The preview shows your photo. When you paste, you’ll see a placeholder instead—you’ll swap in your photo in step 4.</p>
+      </section>
+
+      <section class="card" aria-labelledby="s4">
+        <div class="step"><span class="n">4</span><h2 id="s4">Add It to Gmail</h2></div>
+        <ol class="howto">
+          <li><a class="btn secondary" href="https://mail.google.com/mail/u/0/#settings/general" target="_blank" rel="noopener">Open Gmail signature settings</a><br>Scroll down to <em>Signature</em> and click <em>Create new</em>. Name it anything, like “Wayfinder.”</li>
+          <li>Click inside the signature box and paste (<kbd>⌘</kbd> <kbd>V</kbd> on Mac, <kbd>Ctrl</kbd> <kbd>V</kbd> on Windows).</li>
+          <li>Click the placeholder photo once, then press <kbd>Delete</kbd>. Leave your cursor where the photo was.</li>
+          <li>Click the <em>Insert image</em> icon in the toolbar, choose <em>Upload</em>, and select the circle photo you downloaded.</li>
+          <li>Click your photo in the signature box and choose <em>Small</em>.</li>
+          <li>Under <em>Signature defaults</em>, pick your new signature for new emails and replies.</li>
+          <li>Scroll to the bottom of the page and click <em>Save Changes</em>.</li>
+        </ol>
+        <div class="note"><strong>Tip:</strong> Send yourself a test email to check it. If something looks off, delete the signature in Gmail and start again from step 3.</div>
+      </section>
+    </div>
+  </div>
+</main>
+<footer class="wrap">Questions? Reach out to the Design team.</footer>
+
+<div id="copySource" aria-hidden="true"></div>
+
+<script>
+(() => {
+  const GOLD = 'rgb(204,166,30)';
+  const FALLBACK_LOGO = 'https://ci3.googleusercontent.com/mail-sig/AIorK4xCOKOT5TfbFnh5LHZ0xA7dlpLBcu5tBmEmhRsbq9DCggxYB33JlSOHeY3Dh745vWC6xFx7b90QJckl';
+  const hosted = /^https?:$/.test(location.protocol);
+  const abs = p => new URL(p, location.href).href;
+  const LOGO = hosted ? abs('assets/wayfinder-logo.png') : FALLBACK_LOGO;
+  const PLACEHOLDER = hosted ? abs('assets/photo-placeholder.png') : '';
+
+  const $ = id => document.getElementById(id);
+  const f = { name:$('name'), title:$('title'), phone:$('phone'), cal:$('cal') };
+  let photoURL = '';
+
+  const esc = s => s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+  function formatPhone(v){
+    const d = v.replace(/\D/g,'');
+    const t = d.length === 11 && d[0] === '1' ? d.slice(1) : d;
+    return t.length === 10 ? `${t.slice(0,3)}.${t.slice(3,6)}.${t.slice(6)}` : v.trim();
+  }
+  function normalizeUrl(v){
+    v = v.trim(); if(!v) return '';
+    if(!/^https?:\/\//i.test(v)) v = 'https://' + v;
+    try { const u = new URL(v); return u.hostname.includes('.') ? u.href : null; } catch { return null; }
+  }
+
+  // Signature HTML—mirrors the current Wayfinder Gmail signature, trimmed to stay well under Gmail's length limit.
+  function sigHTML(photo){
+    const name = esc(f.name.value.trim() || 'Your Name');
+    const title = esc(f.title.value.trim() || 'Your Title');
+    const phone = esc(formatPhone(f.phone.value));
+    const cal = normalizeUrl(f.cal.value);
+    const p = 'line-height:1.2;margin:0 0 3pt';
+    const txt = (size, weight, color='rgb(0,0,0)') => `font-size:${size}pt;font-family:Poppins,sans-serif;color:${color};font-weight:${weight}`;
+    const photoTag = photo ? `<p style="${p};text-align:center"><img width="96" height="96" src="${photo}" alt="${name}"></p>` : '';
+    return `<table style="color:rgb(34,34,34);border:none;border-collapse:collapse"><tbody><tr>`
+      + `<td style="border-right:1pt solid ${GOLD};vertical-align:top;padding:7.2pt">`
+      + photoTag
+      + `<p style="${p};text-align:center"><img width="200" height="71" src="${LOGO}" alt="Wayfinder"></p></td>`
+      + `<td style="border-left:1pt solid ${GOLD};vertical-align:top;padding:7.2pt">`
+      + `<p style="line-height:1.38;margin:0"><span style="${txt(14,700)}">${name}</span></p>`
+      + `<p style="${p}"><span style="${txt(13,600,GOLD)}">${title}</span></p>`
+      + (phone ? `<p style="${p}"><span style="${txt(11,600)}">${phone}</span></p>` : '')
+      + `<p style="${p}"><a href="https://www.withwayfinder.com/" style="color:rgb(0,0,0);text-decoration:none"><span style="${txt(11,600)}">withwayfinder.com</span></a></p>`
+      + (cal ? `<p style="${p}"><br></p><table style="border:none;border-collapse:collapse"><tbody><tr><td width="164" style="vertical-align:middle;background-color:${GOLD};padding:9.36pt;width:164px"><p style="line-height:1.2;text-align:center;margin:0"><a href="${esc(cal)}" style="${txt(11,700)};text-decoration:none">Schedule Call</a></p></td></tr></tbody></table>` : '')
+      + `</td></tr></tbody></table>`;
+  }
+
+  function render(){
+    $('preview').innerHTML = sigHTML(photoURL || PLACEHOLDER);
+    const calBad = f.cal.value.trim() && normalizeUrl(f.cal.value) === null;
+    $('calError').hidden = !calBad;
+    const ready = f.name.value.trim() && f.title.value.trim() && !calBad;
+    $('copy').disabled = !ready;
+    if(!ready) setStatus(calBad ? 'Fix the scheduling link to copy your signature.' : 'Add your name and title to copy your signature.');
+    else if(!copiedOnce) setStatus('');
+  }
+  let copiedOnce = false;
+  const setStatus = t => { $('status').textContent = t; };
+  Object.values(f).forEach(el => el.addEventListener('input', () => { copiedOnce = false; render(); }));
+  f.phone.addEventListener('blur', () => { f.phone.value = formatPhone(f.phone.value); render(); });
+
+  // Copy: pasted signature uses the hosted placeholder (Gmail drops images that aren't hosted online).
+  $('copy').addEventListener('click', async () => {
+    const html = sigHTML(PLACEHOLDER);
+    const plain = [f.name.value.trim(), f.title.value.trim(), formatPhone(f.phone.value), 'withwayfinder.com'].filter(Boolean).join('\n');
+    let ok = false;
+    try {
+      if (navigator.clipboard && window.ClipboardItem) {
+        await navigator.clipboard.write([new ClipboardItem({
+          'text/html': new Blob([html], {type:'text/html'}),
+          'text/plain': new Blob([plain], {type:'text/plain'})
+        })]);
+        ok = true;
+      }
+    } catch (e) { ok = false; }
+    if (!ok) {
+      const box = $('copySource'); box.innerHTML = html;
+      const r = document.createRange(); r.selectNodeContents(box);
+      const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
+      try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+      sel.removeAllRanges(); box.innerHTML = '';
+    }
+    copiedOnce = ok;
+    setStatus(ok ? 'Copied. Now paste it into Gmail (step 4).' : 'Your browser blocked copying. Try Chrome, or select the preview and copy it manually.');
+  });
+
+  // ---------- Photo cropper ----------
+  const canvas = $('cropCanvas'), ctx = canvas.getContext('2d'), crop = $('crop'), zoom = $('zoom');
+  let img = null, scale = 1, base = 1, ox = 0, oy = 0; // offsets in canvas px
+
+  function clamp(){
+    const w = img.width * base * scale, h = img.height * base * scale, S = canvas.width;
+    ox = Math.min(0, Math.max(S - w, ox));
+    oy = Math.min(0, Math.max(S - h, oy));
+  }
+  function draw(){
+    if(!img) return;
+    const S = canvas.width;
+    ctx.clearRect(0,0,S,S);
+    ctx.drawImage(img, ox, oy, img.width*base*scale, img.height*base*scale);
+  }
+  function exportCircle(size){
+    const c = document.createElement('canvas'); c.width = c.height = size;
+    const x = c.getContext('2d'), k = size / canvas.width;
+    x.imageSmoothingQuality = 'high';
+    x.beginPath(); x.arc(size/2, size/2, size/2, 0, Math.PI*2); x.closePath(); x.clip();
+    x.drawImage(img, ox*k, oy*k, img.width*base*scale*k, img.height*base*scale*k);
+    return c;
+  }
+  function updatePreviewPhoto(){ photoURL = exportCircle(192).toDataURL('image/png'); render(); }
+  let pending; const schedule = () => { draw(); clearTimeout(pending); pending = setTimeout(updatePreviewPhoto, 120); };
+
+  function loadFile(file){
+    if(!file || !file.type.startsWith('image/')) { alert('Please choose an image file (JPG or PNG).'); return; }
+    const url = URL.createObjectURL(file);
+    const im = new Image();
+    im.onload = () => {
+      img = im; const S = canvas.width;
+      base = S / Math.min(im.width, im.height); scale = 1; zoom.value = 1;
+      ox = (S - im.width*base)/2; oy = (S - im.height*base)/2;
+      $('cropper').classList.add('on'); schedule(); crop.focus();
+    };
+    im.src = url;
+  }
+  $('file').addEventListener('change', e => loadFile(e.target.files[0]));
+  const drop = $('drop');
+  ['dragenter','dragover'].forEach(t => drop.addEventListener(t, e => { e.preventDefault(); drop.classList.add('over'); }));
+  ['dragleave','drop'].forEach(t => drop.addEventListener(t, e => { e.preventDefault(); drop.classList.remove('over'); }));
+  drop.addEventListener('drop', e => loadFile(e.dataTransfer.files[0]));
+
+  zoom.addEventListener('input', () => {
+    if(!img) return;
+    const S = canvas.width, c = S/2, prev = scale; scale = +zoom.value;
+    ox = c - (c - ox) * scale/prev; oy = c - (c - oy) * scale/prev;
+    clamp(); schedule();
+  });
+  let dragging = false, lx = 0, ly = 0;
+  crop.addEventListener('pointerdown', e => { if(!img) return; dragging = true; lx = e.clientX; ly = e.clientY; crop.setPointerCapture(e.pointerId); crop.classList.add('drag'); });
+  crop.addEventListener('pointermove', e => {
+    if(!dragging) return;
+    const k = canvas.width / crop.clientWidth;
+    ox += (e.clientX - lx)*k; oy += (e.clientY - ly)*k; lx = e.clientX; ly = e.clientY;
+    clamp(); schedule();
+  });
+  ['pointerup','pointercancel'].forEach(t => crop.addEventListener(t, () => { dragging = false; crop.classList.remove('drag'); }));
+  crop.addEventListener('keydown', e => {
+    if(!img) return;
+    const step = e.shiftKey ? 40 : 10, m = {ArrowLeft:[step,0],ArrowRight:[-step,0],ArrowUp:[0,step],ArrowDown:[0,-step]}[e.key];
+    if(!m) return; e.preventDefault(); ox += m[0]; oy += m[1]; clamp(); schedule();
+  });
+
+  $('download').addEventListener('click', () => {
+    if(!img) return;
+    exportCircle(192).toBlob(b => {
+      const slug = (f.name.value.trim() || 'my').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(b); a.download = `${slug}-signature-photo.png`;
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+    }, 'image/png');
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
