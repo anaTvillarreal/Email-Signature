@@ -81,9 +81,10 @@
         <input id="name" type="text" autocomplete="name" placeholder="Jordan Rivera">
         <label for="title">Job title</label>
         <input id="title" type="text" autocomplete="organization-title" placeholder="Partnerships">
-        <label for="phone">Phone <span class="opt">(optional)</span></label>
-        <input id="phone" type="tel" autocomplete="tel" placeholder="972.345.9699">
+        <label for="phone">Phone</label>
+        <input id="phone" type="tel" autocomplete="tel" placeholder="972.345.9699" required aria-describedby="phoneError">
         <p class="hint">Type it however you like—we’ll format it as 000.000.0000.</p>
+        <p class="error" id="phoneError" hidden>Check your phone number—it looks too short.</p>
         <label for="cal">Scheduling link <span class="opt">(optional)</span></label>
         <input id="cal" type="url" placeholder="https://calendly.com/your-name/30min">
         <p class="hint">Your link for the “Schedule Call” button. Leave it blank to use the Wayfinder demo page.</p>
@@ -122,7 +123,7 @@
         <div class="actions">
           <button class="primary" id="copy" disabled>Copy signature</button>
         </div>
-        <p class="status" id="status" role="status" aria-live="polite">Add your name and title to copy your signature.</p>
+        <p class="status" id="status" role="status" aria-live="polite">Add your name, title, and phone number to copy your signature.</p>
         <p class="hint">The preview shows your photo. When you paste, you’ll see a placeholder instead—you’ll swap in your photo in step 4.</p>
       </section>
 
@@ -177,7 +178,7 @@
   function sigHTML(photo){
     const name = esc(f.name.value.trim() || 'Your Name');
     const title = esc(f.title.value.trim() || 'Your Title');
-    const phone = esc(formatPhone(f.phone.value));
+    const phone = esc(formatPhone(f.phone.value)) || '000.000.0000';
     const cal = normalizeUrl(f.cal.value) || DEMO_URL;
     const p = 'line-height:1.2;margin:0 0 3pt';
     const txt = (size, weight, color='rgb(0,0,0)') => `font-size:${size}pt;font-family:Poppins,sans-serif;color:${color};font-weight:${weight}`;
@@ -189,7 +190,7 @@
       + `<td style="border-left:1pt solid ${GOLD};vertical-align:top;padding:7.2pt">`
       + `<p style="line-height:1.38;margin:0"><span style="${txt(14,700)}">${name}</span></p>`
       + `<p style="${p}"><span style="${txt(13,600,GOLD)}">${title}</span></p>`
-      + (phone ? `<p style="${p}"><span style="${txt(11,600)}">${phone}</span></p>` : '')
+      + `<p style="${p}"><span style="${txt(11,600)}">${phone}</span></p>`
       + `<p style="${p}"><a href="https://www.withwayfinder.com/" style="color:rgb(0,0,0);text-decoration:none"><span style="${txt(11,600)}">withwayfinder.com</span></a></p>`
       + (cal ? `<p style="${p}"><br></p><table style="border:none;border-collapse:collapse"><tbody><tr><td width="164" style="vertical-align:middle;background-color:${GOLD};padding:9.36pt;width:164px"><p style="line-height:1.2;text-align:center;margin:0"><a href="${esc(cal)}" style="${txt(11,700)};text-decoration:none">Schedule Call</a></p></td></tr></tbody></table>` : '')
       + `</td></tr></tbody></table>`;
@@ -199,15 +200,18 @@
     $('preview').innerHTML = sigHTML(photoURL || PLACEHOLDER);
     const calBad = f.cal.value.trim() && normalizeUrl(f.cal.value) === null;
     $('calError').hidden = !calBad;
-    const ready = f.name.value.trim() && f.title.value.trim() && !calBad;
+    const digits = f.phone.value.replace(/\D/g,'').length;
+    const phoneBad = digits > 0 && digits < 10 && phoneTouched;
+    $('phoneError').hidden = !phoneBad;
+    const ready = f.name.value.trim() && f.title.value.trim() && digits >= 10 && !calBad;
     $('copy').disabled = !ready;
-    if(!ready) setStatus(calBad ? 'Fix the scheduling link to copy your signature.' : 'Add your name and title to copy your signature.');
+    if(!ready) setStatus(calBad ? 'Fix the scheduling link to copy your signature.' : phoneBad ? 'Check your phone number to copy your signature.' : 'Add your name, title, and phone number to copy your signature.');
     else if(!copiedOnce) setStatus('');
   }
-  let copiedOnce = false;
+  let copiedOnce = false, phoneTouched = false;
   const setStatus = t => { $('status').textContent = t; };
   Object.values(f).forEach(el => el.addEventListener('input', () => { copiedOnce = false; render(); }));
-  f.phone.addEventListener('blur', () => { f.phone.value = formatPhone(f.phone.value); render(); });
+  f.phone.addEventListener('blur', () => { phoneTouched = true; f.phone.value = formatPhone(f.phone.value); render(); });
 
   // Copy: pasted signature uses the hosted placeholder (Gmail drops images that aren't hosted online).
   $('copy').addEventListener('click', async () => {
