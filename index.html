@@ -86,7 +86,7 @@
         <p class="hint">Type it however you like—we’ll format it as 000.000.0000.</p>
         <label for="cal">Scheduling link <span class="opt">(optional)</span></label>
         <input id="cal" type="url" placeholder="https://calendly.com/your-name/30min">
-        <p class="hint">Adds a “Schedule Call” button. Leave it blank if you don’t use one.</p>
+        <p class="hint">Your link for the “Schedule Call” button. Leave it blank to use the Wayfinder demo page.</p>
         <p class="error" id="calError" hidden>That doesn’t look like a link. Check that it starts with https://</p>
       </section>
 
@@ -149,6 +149,7 @@
 <script>
 (() => {
   const GOLD = 'rgb(204,166,30)';
+  const DEMO_URL = 'https://www.withwayfinder.com/contact/demo';
   const FALLBACK_LOGO = 'https://ci3.googleusercontent.com/mail-sig/AIorK4xCOKOT5TfbFnh5LHZ0xA7dlpLBcu5tBmEmhRsbq9DCggxYB33JlSOHeY3Dh745vWC6xFx7b90QJckl';
   const hosted = /^https?:$/.test(location.protocol);
   const abs = p => new URL(p, location.href).href;
@@ -177,7 +178,7 @@
     const name = esc(f.name.value.trim() || 'Your Name');
     const title = esc(f.title.value.trim() || 'Your Title');
     const phone = esc(formatPhone(f.phone.value));
-    const cal = normalizeUrl(f.cal.value);
+    const cal = normalizeUrl(f.cal.value) || DEMO_URL;
     const p = 'line-height:1.2;margin:0 0 3pt';
     const txt = (size, weight, color='rgb(0,0,0)') => `font-size:${size}pt;font-family:Poppins,sans-serif;color:${color};font-weight:${weight}`;
     const photoTag = photo ? `<p style="${p};text-align:center"><img width="96" height="96" src="${photo}" alt="${name}"></p>` : '';
