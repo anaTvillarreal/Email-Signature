@@ -29,6 +29,8 @@
   .step .n{flex:none;width:28px;height:28px;border-radius:50%;background:var(--dark-green);color:#fff;font-weight:600;font-size:14px;display:grid;place-items:center}
   .step h2{font-size:18px;margin:0;font-weight:600}
   label{display:block;font-weight:500;font-size:14px;margin:14px 0 4px}
+  label.check{display:flex;align-items:center;gap:10px;margin-top:18px;cursor:pointer}
+  label.check input{width:18px;height:18px;margin:0;accent-color:var(--dark-green)}
   label .opt{font-weight:400;color:var(--muted)}
   input[type=text],input[type=tel],input[type=url]{width:100%;font:inherit;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink)}
   input:focus-visible,button:focus-visible,.crop:focus-visible,a:focus-visible{outline:3px solid var(--green);outline-offset:2px}
@@ -85,10 +87,13 @@
         <input id="phone" type="tel" autocomplete="tel" placeholder="972.345.9699" required aria-describedby="phoneError">
         <p class="hint">Type it however you like—we’ll format it as 000.000.0000.</p>
         <p class="error" id="phoneError" hidden>Check your phone number—it looks too short.</p>
-        <label for="cal">Scheduling link <span class="opt">(optional)</span></label>
-        <input id="cal" type="url" placeholder="https://calendly.com/your-name/30min">
-        <p class="hint">Your link for the “Schedule Call” button. Leave it blank to use the Wayfinder demo page.</p>
-        <p class="error" id="calError" hidden>That doesn’t look like a link. Check that it starts with https://</p>
+        <label class="check"><input id="showBtn" type="checkbox" checked> Include a “Schedule Call” button</label>
+        <div id="calGroup">
+          <label for="cal">Scheduling link <span class="opt">(optional)</span></label>
+          <input id="cal" type="url" placeholder="https://calendly.com/your-name/30min">
+          <p class="hint">Leave it blank to use the Wayfinder demo page.</p>
+          <p class="error" id="calError" hidden>That doesn’t look like a link. Check that it starts with https://</p>
+        </div>
       </section>
 
       <section class="card" aria-labelledby="s2">
@@ -179,7 +184,7 @@
     const name = esc(f.name.value.trim() || 'Your Name');
     const title = esc(f.title.value.trim() || 'Your Title');
     const phone = esc(formatPhone(f.phone.value)) || '000.000.0000';
-    const cal = normalizeUrl(f.cal.value) || DEMO_URL;
+    const cal = $('showBtn').checked ? (normalizeUrl(f.cal.value) || DEMO_URL) : '';
     const p = 'line-height:1.2;margin:0 0 3pt';
     const txt = (size, weight, color='rgb(0,0,0)') => `font-size:${size}pt;font-family:Poppins,sans-serif;color:${color};font-weight:${weight}`;
     const photoTag = photo ? `<p style="${p};text-align:center"><img width="96" height="96" src="${photo}" alt="${name}"></p>` : '';
@@ -198,7 +203,8 @@
 
   function render(){
     $('preview').innerHTML = sigHTML(photoURL || PLACEHOLDER);
-    const calBad = f.cal.value.trim() && normalizeUrl(f.cal.value) === null;
+    $('calGroup').hidden = !$('showBtn').checked;
+    const calBad = $('showBtn').checked && f.cal.value.trim() && normalizeUrl(f.cal.value) === null;
     $('calError').hidden = !calBad;
     const digits = f.phone.value.replace(/\D/g,'').length;
     const phoneBad = digits > 0 && digits < 10 && phoneTouched;
@@ -209,6 +215,7 @@
     else if(!copiedOnce) setStatus('');
   }
   let copiedOnce = false, phoneTouched = false;
+  $('showBtn').addEventListener('change', () => { copiedOnce = false; render(); });
   const setStatus = t => { $('status').textContent = t; };
   Object.values(f).forEach(el => el.addEventListener('input', () => { copiedOnce = false; render(); }));
   f.phone.addEventListener('blur', () => { phoneTouched = true; f.phone.value = formatPhone(f.phone.value); render(); });
